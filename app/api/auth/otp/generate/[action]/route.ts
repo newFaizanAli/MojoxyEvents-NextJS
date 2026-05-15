@@ -8,7 +8,7 @@ import { OTPEXPIRETIME } from "@/app/utilities/constents";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { action: "signup" | "reset" } },
+  { params }: { params: { action: string } },
 ) {
   try {
     await connectDB();

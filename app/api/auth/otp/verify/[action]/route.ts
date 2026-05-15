@@ -8,7 +8,7 @@ import speakeasy from "speakeasy";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { action: "signup" | "reset" } },
+  { params }: { params: { action: string } },
 ) {
   try {
     await connectDB();
