@@ -88,12 +88,6 @@ export const authService = {
     }
   },
 
-  getCurrentUser(): SignUpUser | null {
-    const user = localStorage.getItem("mjx_user");
-
-    return user ? JSON.parse(user) : null;
-  },
-
   async resetPassword(token: string, password: string) {
     const res = await axios.post(`${API_ENDPOINTS?.AUTH?.RESET_PASSWORD}`, {
       password,
