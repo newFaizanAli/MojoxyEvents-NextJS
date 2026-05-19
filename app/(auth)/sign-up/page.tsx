@@ -28,9 +28,9 @@ const SignUpPage = () => {
     const [showOtpBox, setShowOtpBox] = useState(false);
     const searchParams = useSearchParams();
     const router = useRouter();
-    const roleFromQuery = searchParams.get("role");
+    const roleFromQuery = searchParams.get("role") ?? "user";
     const allowedRoles = ["user", "artist"];
-    const content = subtitleContent[roleFromQuery ?? "user"];
+    const content = subtitleContent[allowedRoles.includes(roleFromQuery) ? roleFromQuery : "user"];
 
 
 
