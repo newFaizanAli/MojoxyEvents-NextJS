@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SignupErrors } from '@/app/types';
@@ -103,79 +103,81 @@ const SignUpPage = () => {
 
 
     return (
-        <AuthLayout title="Create account" subtitle={content.subtitle}>
+        <Suspense fallback={<div>Loading...</div>}>
+            <AuthLayout title="Create account" subtitle={content.subtitle}>
 
-            {showOtpBox ? <OtpVerification
-                email={formData.email}
-                action="signup"
-                onVerified={handleOtpVerified}
-                isResend={true}
-                onCancel={() => setShowOtpBox(false)}
-            /> :
-                <form className="" onSubmit={handleSubmit}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                        <Input name="name" label="Name" type="text"
-                            placeholder="John Doe" icon="user" value={formData.name}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    [e.target.name]: e.target.value,
-                                })
-                            } required />
-                        {errors.name && (
-                            <p className="mt-1 text-xs text-red-600">{errors.name}</p>
-                        )}
-                        <Input name="email" label="Email" type="email"
-                            placeholder="you@example.com" icon="mail" value={formData.email}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    [e.target.name]: e.target.value,
-                                })
-                            } required />
-                        {errors.email && (
-                            <p className="mt-1 text-xs text-red-600">{errors.email}</p>
-                        )}
-                        <Input name="phone" label="Phone" type="phone"
-                            placeholder="+92 456 7890000" icon="phone" value={formData.phone}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    [e.target.name]: e.target.value,
-                                })
-                            } required />
-                        {errors.phone && (
-                            <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
-                        )}
-                        <Input name="password" label="Password" type="password" placeholder="••••••••"
-                            value={formData.password}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    [e.target.name]: e.target.value,
-                                })
-                            }
-                            required />
-                        {errors.password && (
-                            <p className="mt-1 text-xs text-red-600">{errors.password}</p>
-                        )}
+                {showOtpBox ? <OtpVerification
+                    email={formData.email}
+                    action="signup"
+                    onVerified={handleOtpVerified}
+                    isResend={true}
+                    onCancel={() => setShowOtpBox(false)}
+                /> :
+                    <form className="" onSubmit={handleSubmit}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                            <Input name="name" label="Name" type="text"
+                                placeholder="John Doe" icon="user" value={formData.name}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [e.target.name]: e.target.value,
+                                    })
+                                } required />
+                            {errors.name && (
+                                <p className="mt-1 text-xs text-red-600">{errors.name}</p>
+                            )}
+                            <Input name="email" label="Email" type="email"
+                                placeholder="you@example.com" icon="mail" value={formData.email}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [e.target.name]: e.target.value,
+                                    })
+                                } required />
+                            {errors.email && (
+                                <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+                            )}
+                            <Input name="phone" label="Phone" type="phone"
+                                placeholder="+92 456 7890000" icon="phone" value={formData.phone}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [e.target.name]: e.target.value,
+                                    })
+                                } required />
+                            {errors.phone && (
+                                <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
+                            )}
+                            <Input name="password" label="Password" type="password" placeholder="••••••••"
+                                value={formData.password}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [e.target.name]: e.target.value,
+                                    })
+                                }
+                                required />
+                            {errors.password && (
+                                <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+                            )}
 
-                        <Button type="submit" fullWidth size="lg">
-                            Create Account
-                        </Button>
-                    </div>
-                </form>
-            }
+                            <Button type="submit" fullWidth size="lg">
+                                Create Account
+                            </Button>
+                        </div>
+                    </form>
+                }
 
-            <p className='mt-6' style={{ textAlign: "center", fontSize: 14, color: "var(--gray-500)" }}>
-                Already have an account?{" "}
-                <Link href={ROUTES_PATHS.AUTH.SIGN_IN} style={{ color: "var(--primary)", fontWeight: 700, background: "none", border: "none", cursor: "pointer" }}>Sign in</Link>
-            </p>
-
-
+                <p className='mt-6' style={{ textAlign: "center", fontSize: 14, color: "var(--gray-500)" }}>
+                    Already have an account?{" "}
+                    <Link href={ROUTES_PATHS.AUTH.SIGN_IN} style={{ color: "var(--primary)", fontWeight: 700, background: "none", border: "none", cursor: "pointer" }}>Sign in</Link>
+                </p>
 
 
-        </AuthLayout>
+
+
+            </AuthLayout>
+        </Suspense>
     );
 }
 
