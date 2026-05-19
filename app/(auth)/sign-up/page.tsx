@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -29,7 +30,7 @@ const SignUpPage = () => {
     const router = useRouter();
     const roleFromQuery = searchParams.get("role");
     const allowedRoles = ["user", "artist"];
-    const content = subtitleContent[roleFromQuery as string];
+    const content = subtitleContent[roleFromQuery ?? "user"];
 
 
 
@@ -95,11 +96,10 @@ const SignUpPage = () => {
 
 
     useEffect(() => {
-        if (!allowedRoles.includes(roleFromQuery as string) || !roleFromQuery) {
+        if (!roleFromQuery || !allowedRoles.includes(roleFromQuery)) {
             router.replace(ROUTES_PATHS.AUTH.SIGN_IN);
-            return;
         }
-    }, []);
+    }, [roleFromQuery, router]);
 
 
     return (
