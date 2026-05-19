@@ -4,11 +4,12 @@ import { IconName } from "@/app/types";
 
 interface InputProps {
     name: string;
-    label: string;
+    label?: string;
     type?: string;
     placeholder?: string;
-    value: string | number;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    value?: string | number;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    className?: string;
     icon?: IconName;
     error?: string;
     hint?: string;
@@ -16,7 +17,7 @@ interface InputProps {
     required?: boolean;
 }
 
-const Input = ({ name, label, type = "text", placeholder, value, autoComplete = "", onChange, icon, error, hint, required }: InputProps) => {
+const Input = ({ name, label, type = "text", placeholder, value, autoComplete = "", onChange, className = "", icon, error, hint, required }: InputProps) => {
     const [showPass, setShowPass] = useState(false);
     const [focused, setFocused] = useState(false);
     return (
@@ -47,6 +48,7 @@ const Input = ({ name, label, type = "text", placeholder, value, autoComplete = 
                         borderColor: error ? "var(--error)" : focused ? "var(--primary)" : "var(--gray-200)",
                         boxShadow: focused ? (error ? "0 0 0 3px rgba(239,68,68,0.1)" : "0 0 0 3px rgba(124,58,237,0.1)") : "none",
                     }}
+                    className={className}
                 />
                 {type === "password" && (
                     <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "var(--gray-400)", cursor: "pointer" }}>

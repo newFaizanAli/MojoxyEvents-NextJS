@@ -3,9 +3,10 @@ import { icons } from "@/app/utilities/icons";
 //components
 export type IconName = keyof typeof icons;
 
+export type UserRole = "user" | "artist" | "admin" | "subadmin";
 export type User = {
   _id?: string;
-  role: "user" | "artist" | "admin" | "subadmin";
+  role: UserRole;
   name: string;
   email: string;
   password: string;

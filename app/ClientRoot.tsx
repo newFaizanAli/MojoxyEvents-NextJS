@@ -10,7 +10,7 @@ export default function ClientRoot({
 }) {
     useEffect(() => {
         const fetch = async () => {
-            await useUserStore.getState().fetchUser();
+            await useUserStore.getState().fetchCurrentUser();
         };
 
         fetch();

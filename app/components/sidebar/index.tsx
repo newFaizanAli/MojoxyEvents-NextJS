@@ -1,54 +1,177 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+
 import { IconName } from "@/app/types";
 import { Avatar, Icon } from "../shared";
+import { useUserStore } from "@/app/store/user";
+import { sidebar_links } from "@/app/utilities/sidebar";
 
-interface SidebarProps {
-    page: string;
-    setPage: (page: string) => void;
-    user: any;
-}
+const DashboardSidebar = () => {
+    const router = useRouter();
+    const pathname = usePathname();
 
-const DashboardSidebar = ({ page, setPage, user }: SidebarProps) => {
-    const links = [
-        { key: "dashboard", label: "Overview", icon: "grid" },
-        { key: "my-bookings", label: "My Bookings", icon: "calendar", badge: 2 },
-        { key: "favorites", label: "Favorites", icon: "heart" },
-        { key: "notifications", label: "Notifications", icon: "bell", badge: 2 },
-        { key: "profile", label: "My Profile", icon: "user" },
-        { key: "settings", label: "Settings", icon: "settings" },
-    ];
+    const { user } = useUserStore();
+
+    const [openMenus, setOpenMenus] = useState<string[]>([]);
+
+    const role = user?.role || "user";
+
+    const toggleMenu = (name: string) => {
+        setOpenMenus((prev) =>
+            prev.includes(name)
+                ? prev.filter((i) => i !== name)
+                : [...prev, name]
+        );
+    };
+
+    const isActive = (path?: string) => {
+        if (!path) return false;
+
+        // exact dashboard root match
+        if (path === "/dashboard") {
+            return pathname === "/dashboard";
+        }
+
+        // nested routes
+        return pathname.startsWith(path);
+    };
+    const filteredLinks = sidebar_links.filter((link) =>
+        link.allowed.includes(role)
+    );
+
     return (
-        <aside style={{ width: 240, background: "var(--white)", borderRight: "1px solid var(--gray-200)", display: "flex", flexDirection: "column", height: "100%", position: "sticky", top: 0 }}>
-            <div style={{ padding: "24px 16px", borderBottom: "1px solid var(--gray-100)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Avatar src={user?.avatar} name={user?.name || "User"} size={42} ring />
-                    <div style={{ overflow: "hidden" }}>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: "var(--gray-900)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{user?.name || "John Doe"}</div>
-                        <div style={{ fontSize: 12, color: "var(--gray-500)" }}>Premium Member</div>
+        <aside className="w-60 h-screen bg-white border-r border-gray-200 flex flex-col sticky top-0">
+            {/* Header */}
+            <div className="p-6 border-b border-gray-100">
+                <div className="flex items-center gap-3">
+                    <Avatar name={user?.name || "User"} size={42} ring />
+
+                    <div className="overflow-hidden">
+                        <div className="text-sm font-bold text-gray-900 truncate">
+                            {user?.name || "John Doe"}
+                        </div>
+
+                        <div className="text-xs text-gray-500 capitalize">
+                            {role}
+                        </div>
                     </div>
                 </div>
             </div>
-            <nav style={{ flex: 1, padding: "12px 8px", display: "flex", flexDirection: "column", gap: 2 }}>
-                {links.map(l => (
-                    <button key={l.key} onClick={() => setPage(l.key)} style={{
-                        display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
-                        borderRadius: "var(--radius-md)", border: "none",
-                        background: page === l.key ? "var(--accent-soft)" : "transparent",
-                        color: page === l.key ? "var(--primary)" : "var(--gray-600)",
-                        fontWeight: page === l.key ? 700 : 500, fontSize: 14,
-                        cursor: "pointer", transition: "all 0.15s", width: "100%", textAlign: "left",
-                    }}
-                        onMouseEnter={e => { if (page !== l.key) e.currentTarget.style.background = "var(--gray-50)"; }}
-                        onMouseLeave={e => { if (page !== l.key) e.currentTarget.style.background = "transparent"; }}
-                    >
-                        <Icon name={l.icon as IconName} size={17} color={page === l.key ? "var(--primary)" : "var(--gray-500)"} />
-                        <span style={{ flex: 1 }}>{l.label}</span>
-                        {l.badge && <span style={{ background: "var(--primary)", color: "white", borderRadius: "var(--radius-full)", fontSize: 10, fontWeight: 700, padding: "1px 7px" }}>{l.badge}</span>}
-                    </button>
-                ))}
+
+            {/* Nav */}
+            <nav className="flex-1 p-2 flex flex-col gap-1 overflow-y-auto">
+                {filteredLinks.map((item) => {
+                    const hasSubmenu = item.submenu?.length;
+
+                    // MAIN ACTIVE
+                    const active =
+                        isActive(item.path) ||
+                        item.submenu?.some((s) => isActive(s.path));
+
+
+                    if (!hasSubmenu) {
+                        return (
+                            <button
+                                key={item.name}
+                                onClick={() => item.path && router.push(item.path)}
+                                className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition w-full text-left
+                  ${active
+                                        ? "bg-blue-50 text-blue-600"
+                                        : "text-gray-600 hover:bg-gray-50"
+                                    }`}
+                            >
+                                {item.icon && (
+                                    <Icon
+                                        name={item.icon as IconName}
+                                        size={17}
+                                        color={
+                                            active
+                                                ? "var(--primary)"
+                                                : "var(--gray-500)"
+                                        }
+                                    />
+                                )}
+
+                                <span>{item.name}</span>
+                            </button>
+                        );
+                    }
+
+
+                    return (
+                        <div key={item.name}>
+                            <button
+                                onClick={() => toggleMenu(item.name)}
+                                className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition w-full text-left
+                  ${active
+                                        ? "bg-blue-50 text-blue-600"
+                                        : "text-gray-600 hover:bg-gray-50"
+                                    }`}
+                            >
+                                {item.icon && (
+                                    <Icon
+                                        name={item.icon as IconName}
+                                        size={17}
+                                        color={
+                                            active
+                                                ? "var(--primary)"
+                                                : "var(--gray-500)"
+                                        }
+                                    />
+                                )}
+
+                                <span className="flex-1">{item.name}</span>
+
+                                <span className="text-xs">
+                                    {openMenus.includes(item.name) ? "−" : "+"}
+                                </span>
+                            </button>
+
+                            {openMenus.includes(item.name) && (
+                                <div className="ml-6 mt-1 flex flex-col gap-1">
+                                    {item.submenu
+                                        ?.filter((sub) => sub.allowed.includes(role))
+                                        .map((sub) => {
+                                            const subActive = isActive(sub.path);
+
+                                            return (
+                                                <button
+                                                    key={sub.name}
+                                                    onClick={() =>
+                                                        sub.path && router.push(sub.path)
+                                                    }
+                                                    className={`px-3 py-2 rounded-md text-sm text-left transition
+                            ${subActive
+                                                            ? "bg-blue-50 text-blue-600"
+                                                            : "text-gray-600 hover:bg-gray-50"
+                                                        }`}
+                                                >
+                                                    {sub.name}
+                                                </button>
+                                            );
+                                        })}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </nav>
-            <div style={{ padding: "12px 8px", borderTop: "1px solid var(--gray-100)" }}>
-                <button onClick={() => setPage("home")} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: "var(--radius-md)", border: "none", background: "transparent", color: "var(--gray-600)", fontSize: 14, fontWeight: 500, cursor: "pointer", width: "100%" }}>
-                    <Icon name="home" size={17} color="var(--gray-400)" /> Back to Site
+
+            {/* Footer */}
+            <div className="p-2 border-t border-gray-100">
+                <button
+                    className="flex items-center gap-3 px-3 py-2 w-full text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                    onClick={() => router.push("/")}
+                >
+                    <Icon
+                        name="home"
+                        size={17}
+                        color="var(--gray-400)"
+                    />
+
+                    Back to Site
                 </button>
             </div>
         </aside>

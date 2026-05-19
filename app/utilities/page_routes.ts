@@ -13,6 +13,13 @@ export const ROUTES_PATHS = {
     BOOKING: {
       ADD: (id: string) => `/booking/add/${id}`,
     },
+
+    DASHBOARD: {
+      USER: {
+        LIST: "/dashboard/user/list",
+        PROFILE: (id: string) => `/dashboard/user/profile/${id}`,
+      },
+    },
   },
 
   AUTH: {

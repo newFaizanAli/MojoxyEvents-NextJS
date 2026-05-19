@@ -6,5 +6,10 @@ import EmptyState from "./EmptyState";
 import SearchBar from "./SearchBar";
 import ToastProvider from "./ToastProvider";
 import AppImage from "./AppImage";
+import DataTable from "./DataTable";
 
-export { Avatar, Badge, Icon, LoadingSpinner, EmptyState, SearchBar, AppImage, ToastProvider };
+
+export {
+    Avatar, Badge, Icon, LoadingSpinner, EmptyState, SearchBar, AppImage, ToastProvider,
+    DataTable
+};
