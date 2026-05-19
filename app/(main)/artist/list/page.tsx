@@ -2,36 +2,37 @@
 
 export const dynamic = "force-dynamic";
 
-// import {
-//     useEffect,
-// } from 'react'
-// import { useSearchParams, useRouter } from 'next/navigation';
-// import { EmptyState, Icon, SearchBar } from '@/app/components/shared';
-// import { ArtistCard } from '@/app/components/pages/artist';
-// import { Button } from '@/app/components/ui';
-// import { useArtistStore, useCategoryStore } from '@/app/store';
-// import Link from 'next/link';
-// import { ROUTES_PATHS } from '@/app/utilities/page_routes';
+import {
+    Suspense,
+    useEffect,
+} from 'react'
+import { useSearchParams, useRouter } from 'next/navigation';
+import { EmptyState, Icon, SearchBar } from '@/app/components/shared';
+import { ArtistCard } from '@/app/components/pages/artist';
+import { Button } from '@/app/components/ui';
+import { useArtistStore, useCategoryStore } from '@/app/store';
+import Link from 'next/link';
+import { ROUTES_PATHS } from '@/app/utilities/page_routes';
 import { H1 } from '@/app/components/shared/Typography';
 
 
-const ArtistListPage = () => {
-    // const { fetchArtists, artists } = useArtistStore();
-    // const { fetchCategories, categories } = useCategoryStore();
-    // const router = useRouter();
-    // const searchParams = useSearchParams()
+const ArtistListContent = () => {
+    const { fetchArtists, artists } = useArtistStore();
+    const { fetchCategories, categories } = useCategoryStore();
+    const router = useRouter();
+    const searchParams = useSearchParams()
 
-    // const search = searchParams.get("search") ?? "";
-    // const category = searchParams.get("category") ?? "";
+    const search = searchParams.get("search") ?? "";
+    const category = searchParams.get("category") ?? "";
 
 
-    // useEffect(() => {
-    //     fetchArtists(search, category);
-    // }, [search, category, fetchArtists]);
+    useEffect(() => {
+        fetchArtists(search, category);
+    }, [search, category, fetchArtists]);
 
-    // useEffect(() => {
-    //     fetchCategories()
-    // }, [])
+    useEffect(() => {
+        fetchCategories()
+    }, [])
 
 
 
@@ -40,14 +41,14 @@ const ArtistListPage = () => {
             {/* Header */}
             <div className="mb-9 space-y-2">
                 <H1 useTiltNeon>All Artists</H1>
-                {/* <p className="text-gray-500 text-base">
+                <p className="text-gray-500 text-base">
                     Discover {artists.length} world-class performers
-                </p> */}
+                </p>
             </div>
 
             {/* Filters */}
             <div className="flex align-items-center flex-wrap gap-4 mb-4">
-                {/* <div className="flex-1 max-w-full">
+                <div className="flex-1 max-w-full">
                     <SearchBar
                         placeholder="Search artists..."
                         onSearch={(value) => {
@@ -62,23 +63,10 @@ const ArtistListPage = () => {
                             router.push(`?${params.toString()}`);
                         }}
                     />
-                </div> */}
+                </div>
 
-                {/* <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    {genres.map(g => (
-                        <button key={g} onClick={() => setFilter(g)} style={{
-                            padding: "8px 16px", borderRadius: "var(--radius-full)", fontSize: 13, fontWeight: 600,
-                            background: filter === g ? "var(--primary)" : "var(--white)",
-                            color: filter === g ? "var(--white)" : "var(--gray-600)",
-                            border: filter === g ? "none" : "1.5px solid var(--gray-200)",
-                            cursor: "pointer", transition: "all 0.15s",
-                        }}>
-                            {g}
-                        </button>
-                    ))}
-                </div> */}
 
-                {/* <div>
+                <div>
                     <select
                         value={category}
                         style={{ width: "auto", padding: "9px 14px" }}
@@ -102,12 +90,12 @@ const ArtistListPage = () => {
                             </option>
                         ))}
                     </select>
-                </div> */}
+                </div>
 
             </div>
 
             {/* Results Info */}
-            {/* <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-5">
 
                 <p className="text-sm text-gray-500">
                     Showing{" "}
@@ -123,9 +111,9 @@ const ArtistListPage = () => {
                     </button>
                 </div>
 
-            </div> */}
+            </div>
             {/* Grid */}
-            {/* {artists.length === 0 ? (
+            {artists.length === 0 ? (
                 <EmptyState icon="search" title="No artists found" description="Try adjusting your filters or search terms."
                     action={<Button>Clear Filters</Button>} />
             ) : (
@@ -136,9 +124,18 @@ const ArtistListPage = () => {
                         </Link>
                     ))}
                 </div>
-            )} */}
+            )}
         </div>
     );
 };
 
-export default ArtistListPage
+
+
+
+export default function ArtistListPage() {
+    return (
+        <Suspense fallback={<div style={{ textAlign: "center", padding: "2rem" }}>Loading...</div>}>
+            <ArtistListContent />
+        </Suspense>
+    );
+}
