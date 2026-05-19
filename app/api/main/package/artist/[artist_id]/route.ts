@@ -4,10 +4,11 @@ import connectDB from "@/app/lib/db/mongoose";
 import { applyPopulate } from "@/app/lib/db/applyPopulate";
 import Package from "@/app/models/Package";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { artist_id: string } },
-) {
+export async function GET({
+  params,
+}: {
+  params: Promise<{ artist_id: string }>;
+}) {
   try {
     const { artist_id } = await params;
 
