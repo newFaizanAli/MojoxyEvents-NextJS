@@ -9,7 +9,7 @@ const secret = new TextEncoder().encode(env_utils.JWT_SECRET!);
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
 
-  const protectedPaths = ["/dashboard", "/profile", "/admin", "/artist/book"];
+  const protectedPaths = ["/dashboard", "/profile", "/admin", "/booking/add"];
 
   const isProtected = protectedPaths.some((path) =>
     req.nextUrl.pathname.startsWith(path),
@@ -43,6 +43,6 @@ export const config = {
     "/dashboard/:path*",
     "/profile/:path*",
     "/admin/:path*",
-    "/artist/book/:path*",
+    "/booking/add/:path*",
   ],
 };

@@ -14,7 +14,7 @@ const CategoriesPage = () => {
 
     useEffect(() => {
         fetchCategories();
-    }, [])
+    }, [fetchCategories]);
 
 
     return (
