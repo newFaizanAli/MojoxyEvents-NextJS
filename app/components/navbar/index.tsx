@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { IconName } from "@/app/types";
 import { useClickOutside } from "@/app/hooks";
 import { authService } from "@/app/services/auth";
@@ -17,8 +16,6 @@ import { Button } from "../ui";
 const Navbar = () => {
     const { user } = useUserStore();
     const isAuthenticated = Boolean(user);
-    const router = useRouter();
-
     const [isScrolled, setIsScrolled] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
