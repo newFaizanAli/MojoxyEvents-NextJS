@@ -7,9 +7,9 @@ import SearchBar from "./SearchBar";
 import ToastProvider from "./ToastProvider";
 import AppImage from "./AppImage";
 import DataTable from "./DataTable";
-
+import TopContent from "./TopContent";
 
 export {
     Avatar, Badge, Icon, LoadingSpinner, EmptyState, SearchBar, AppImage, ToastProvider,
-    DataTable
+    DataTable, TopContent
 };

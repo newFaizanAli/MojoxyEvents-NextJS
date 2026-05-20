@@ -6,11 +6,12 @@ import { useUserStore } from "@/app/store/user"
 import { Badge, DataTable, SearchBar } from "@/app/components/shared";
 import { Button } from "@/app/components/ui";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ROUTES_PATHS } from "@/app/utilities/page_routes";
 
 
 const UsersListContent = () => {
 
-    const { fetchUsers, users } = useUserStore();
+    const { fetchUsers, users, deleteUser } = useUserStore();
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -20,6 +21,13 @@ const UsersListContent = () => {
     useEffect(() => {
         fetchUsers(search);
     }, [search, fetchUsers]);
+
+    const handleDelete = (id: string) => {
+        const confirm = window.confirm("Are you sure you want to delete this user?");
+        if (confirm) {
+            deleteUser(id);
+        }
+    }
 
 
     const columns = useMemo(
@@ -56,8 +64,8 @@ const UsersListContent = () => {
                         <Button
                             size="sm"
                             variant="secondary"
-                            icon="edit"
-                        //   onClick={() => handleEdit(u._id!)}
+                            // icon="edit"
+                            onClick={() => router.push(ROUTES_PATHS.PROTECTED.DASHBOARD.USER.MANAGE(u._id!))}
                         >
                             {/* <PencilIcon className="h-4 w-4 me-2" /> */}
                             Edit
@@ -67,7 +75,7 @@ const UsersListContent = () => {
                             size="sm"
                             variant="danger"
                             icon="trash"
-                        //   onClick={() => handleDelete(u._id!)}
+                            onClick={() => handleDelete(u._id!)}
                         >
                             {/* <TrashBinIcon className="h-4 w-4" /> */}
                             Delete
@@ -80,13 +88,12 @@ const UsersListContent = () => {
     );
 
 
-
     return (
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 24px" }}>
 
             <DataTable<User>
                 title="Users"
-                addPath={''}
+                addPath={""}
                 data={users || []}
                 columns={columns}
                 searchFields={
@@ -103,13 +110,12 @@ const UsersListContent = () => {
 
                             router.push(`?${params.toString()}`);
                         }}
+
                     />
                 }
             />
         </div>
     )
-
-
 
 }
 

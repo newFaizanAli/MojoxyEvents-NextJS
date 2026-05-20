@@ -17,6 +17,7 @@ export const ROUTES_PATHS = {
     DASHBOARD: {
       USER: {
         LIST: "/dashboard/user/list",
+        MANAGE: (id: string) => `/dashboard/user/${id}`,
         PROFILE: (id: string) => `/dashboard/user/profile/${id}`,
       },
     },

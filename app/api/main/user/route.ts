@@ -47,3 +47,36 @@ export async function GET(request: Request) {
     });
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    await connectDB();
+
+    const payload = await request.json();
+
+    const userExists = await User.findOne({ email: payload.email });
+
+    if (userExists) {
+      return NextResponse.json({
+        success: false,
+        message: "This email is already in used",
+      });
+    }
+
+    const user = await User.create({
+      ...payload,
+    });
+
+    return NextResponse.json({
+      data: user,
+      message: "User created successfully",
+      success: true,
+    });
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+}

@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     },
     USER: {
       BASE: "/main/user",
+      BY_ID: (id: string) => `/main/user/${id}`,
     },
     ARTIST: {
       BASE: "/main/artist",

@@ -40,6 +40,11 @@ export const sidebar_links: SidebarLink[] = [
         path: ROUTES_PATHS.PROTECTED.DASHBOARD.USER.LIST,
         allowed: ["admin"],
       },
+      {
+        name: "Create User",
+        path: ROUTES_PATHS.PROTECTED.DASHBOARD.USER.MANAGE("new"),
+        allowed: ["admin"],
+      },
     ],
   },
   {

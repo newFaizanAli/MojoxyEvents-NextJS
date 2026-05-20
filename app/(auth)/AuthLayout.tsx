@@ -1,5 +1,6 @@
 import { AppImage, Icon } from "@/app/components/shared";
 import Link from "next/link";
+import { H2 } from "../components/shared/Typography";
 
 interface AuthProps {
     children: React.ReactNode
@@ -28,12 +29,9 @@ export default function AuthLayout({ children, title, subtitle }: Readonly<AuthP
                     </Link>
 
                     {/* Heading */}
-                    <h2
-                        className=" text-white font-extrabold leading-tight text-2xl sm:text-3xl lg:text-4xl"
-                        style={{ fontFamily: "var(--font-display)" }}
-                    >
-                        Book the world’s best artists
-                    </h2>
+
+
+                    <H2 useTiltNeon className="text-white font-extrabold text-2xl sm:text-3xl lg:text-4xl"> Book the world’s best artists</H2>
 
                     {/* Subtitle */}
                     <p className="mt-3 text-sm sm:text-[15px] leading-relaxed text-white/60 max-w-md mx-auto">
@@ -62,12 +60,8 @@ export default function AuthLayout({ children, title, subtitle }: Readonly<AuthP
             <div className="flex items-center justify-center bg-white px-6 py-12 lg:p-16">
                 <div className="w-full max-w-md">
                     <div className="mb-8">
-                        <h1
-                            className="text-2xl sm:text-3xl font-extrabold mb-2"
-                            style={{ fontFamily: "var(--font-display)" }}
-                        >
-                            {title}
-                        </h1>
+
+                        <H2 useTiltNeon className="text-2xl sm:text-3xl font-extrabold mb-2">{title}</H2>
                         <p className="text-sm text-gray-500">{subtitle}</p>
                     </div>
 

@@ -1,6 +1,8 @@
 "use client"
+import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/Table";
 import { H3 } from "./Typography";
+import { Button } from "../ui";
 
 interface Column<T> {
     title: string;
@@ -25,6 +27,7 @@ function DataTable<T>({
 }: DataTableProps<T>) {
 
     const safeData = Array.isArray(data) ? data : [];
+    const router = useRouter();
 
 
     return (
@@ -32,6 +35,7 @@ function DataTable<T>({
         <div className="main">
 
             {/* Header */}
+
             <div className="flex justify-between items-center my-4 gap-4">
 
 
@@ -52,12 +56,12 @@ function DataTable<T>({
 
                     {searchFields}
 
-                    {/* <Button
-                            variant="primary"
-                            onClick={() => (navigate(addPath))}
-                        >
-                            Add {title}
-                        </Button> */}
+                    {addPath && <Button
+                        variant="primary"
+                        onClick={() => (router.push(addPath))}
+                    >
+                        Add {title}
+                    </Button>}
 
                 </div>
             </div>
