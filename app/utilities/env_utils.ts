@@ -5,4 +5,6 @@ export const env_utils = {
   OTP_SECRET: process.env.OTP_SECRET!,
   MAIL_USER: process.env.MAIL_USER!,
   MAIL_PASS: process.env.MAIL_PASS!,
+  SUPABASE_URL: process.env.SUPABASE_URL!,
+  SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY!,
 };

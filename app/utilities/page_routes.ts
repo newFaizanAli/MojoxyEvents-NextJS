@@ -20,6 +20,10 @@ export const ROUTES_PATHS = {
         MANAGE: (id: string) => `/dashboard/user/${id}`,
         PROFILE: (id: string) => `/dashboard/user/profile/${id}`,
       },
+      CATEGORY: {
+        LIST: "/dashboard/category/list",
+        MANAGE: (id: string) => `/dashboard/category/${id}`,
+      },
     },
   },
 

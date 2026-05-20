@@ -48,6 +48,24 @@ export const sidebar_links: SidebarLink[] = [
     ],
   },
   {
+    icon: "box",
+    name: "Categories",
+    path: "", // "/dashboard/categories"
+    allowed: ["admin"],
+    submenu: [
+      {
+        name: "Categories List",
+        path: ROUTES_PATHS.PROTECTED.DASHBOARD.CATEGORY.LIST,
+        allowed: ["admin"],
+      },
+      {
+        name: "Create Category",
+        path: ROUTES_PATHS.PROTECTED.DASHBOARD.CATEGORY.MANAGE("new"),
+        allowed: ["admin"],
+      },
+    ],
+  },
+  {
     icon: "settings",
     name: "Settings",
     path: "/dashboard/settings",

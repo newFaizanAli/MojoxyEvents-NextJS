@@ -7,6 +7,9 @@ import Pagination from "./Pagination";
 import SearchableSelect from "./SearchSelect";
 import Switch from "./Switch";
 import RadioGroup from "./Radio";
+import ImageUpload from "./ImageUpload";
+import TextArea from "./TextArea"
+
 
 export {
     Button,
@@ -17,5 +20,7 @@ export {
     Pagination,
     SearchableSelect,
     Switch,
-    RadioGroup
+    RadioGroup,
+    ImageUpload,
+    TextArea
 }

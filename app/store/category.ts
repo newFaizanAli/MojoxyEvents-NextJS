@@ -45,9 +45,26 @@ const useCategoryStore = create<CategoryState>((set) => ({
 
   addCategory: async (category: Category) => {
     try {
+      const formData = new FormData();
+
+      for (const key of Object.keys(category) as (keyof Category)[]) {
+        const k = key;
+        const value = category[k];
+
+        if (k === "genres") {
+          formData.append(k, JSON.stringify(value));
+        } else {
+          if (value instanceof File) {
+            formData.append(k, value);
+          } else if (value !== undefined && value !== null) {
+            formData.append(k, String(value));
+          }
+        }
+      }
+
       const response = await axios.post(
         `${API_ENDPOINTS?.MAIN.CATEGORY?.BASE}`,
-        category,
+        formData,
       );
 
       const newCategory = response.data;
@@ -66,9 +83,25 @@ const useCategoryStore = create<CategoryState>((set) => ({
 
   updateCategory: async (id, category) => {
     try {
+      const formData = new FormData();
+
+      for (const key of Object.keys(category) as (keyof Category)[]) {
+        const k = key;
+        const value = category[k];
+        if (k === "genres") {
+          formData.append(k, JSON.stringify(value));
+        } else {
+          if (value instanceof File) {
+            formData.append(k, value);
+          } else if (value !== undefined && value !== null) {
+            formData.append(k, String(value));
+          }
+        }
+      }
+
       const resp = await axios.put(
         `${API_ENDPOINTS?.MAIN.CATEGORY?.BY_ID(id)}`,
-        category,
+        formData,
       );
 
       if (resp.data.success) {
